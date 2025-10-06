@@ -24,6 +24,7 @@
 	"devDependencies": {
 		"@types/jsonwebtoken": "^9.0.10",
 		"@types/node": "^24.7.0",
-		"@types/ws": "^8.18.1"
+		"@types/ws": "^8.18.1",
+		"typescript": "^5.9.3"
 	}
 }
