@@ -22,6 +22,20 @@ export async function registerPlugins(app: FastifyInstance, host: string, port: 
 						description: 'Development server',
 					},
 				],
+				components: {
+					securitySchemes: {
+						bearerAuth: {
+							type: 'http',
+							scheme: 'bearer',
+							bearerFormat: 'JWT',
+						},
+						serviceToken: {
+							type: 'apiKey',
+							in: 'header',
+							name: 'x-service-token',
+						},
+					},
+				},
 			},
 		});
 		await app.register(swaggerUI, {
