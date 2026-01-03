@@ -4,6 +4,7 @@ import swaggerUI from '@fastify/swagger-ui';
 import rateLimit from '@fastify/rate-limit';
 import fastifyCookie from '@fastify/cookie';
 import helmet from '@fastify/helmet';
+import fastifyMetrics from 'fastify-metrics'
 import { COOKIE_SECRET } from './env.js';
 
 export async function registerPlugins(app: FastifyInstance, host: string, port: number) {
@@ -65,16 +66,23 @@ export async function registerPlugins(app: FastifyInstance, host: string, port: 
 		hidePoweredBy: true,
 	});
 
-	await app.register(rateLimit, { // improve most clever way
-		max: 5,
-		timeWindow: '1 minute',
-		keyGenerator: (req) => req.ip,
-		errorResponseBuilder: () => ({
-			status: 'error',
-			error: 'TOO_MANY_REQUESTS',
-			message: 'Too many login attempts. Please try again later.',
-		}),
-	});
+	// await app.register(rateLimit, { // improve most clever way
+	// 	max: 5,
+	// 	timeWindow: '1 minute',
+	// 	keyGenerator: (req) => req.ip,
+	// 	errorResponseBuilder: () => ({
+	// 		status: 'error',
+	// 		error: 'TOO_MANY_REQUESTS',
+	// 		message: 'Too many login attempts. Please try again later.',
+	// 	}),
+	// });
 
 	await app.register(fastifyCookie, { secret: COOKIE_SECRET, parseOptions: {} });
+
+	await app.register(fastifyMetrics, {
+		endpoint: '/metrics',
+		defaultMetrics: {
+			enabled: true
+		}
+	});
 }
