@@ -3,14 +3,14 @@ import { z } from "zod";
 const envSchema = z.object({
 	COOKIE_SECRET: z.string().min(1, "COOKIE_SECRET is required"),
 	API_PREFIX: z.string().default("/api/v1"),
-	USER_SERVICE_URL: z.string(),
-	SERVICE_TOKEN: z.string(),
+	USER_SERVICE_URL: z.url("USER_SERVICE_URL must be a valid URL"),
+	SERVICE_TOKEN: z.string().min(1, "SERVICE_TOKEN is required"),
 	LOG_LEVEL: z.enum(["fatal", "error", "warn", "info", "debug", "trace"]).default("info"),
 	JWT_SECRET: z.string().min(1, "JWT_SECRET is required"),
 	JWT_REFRESH_SECRET: z.string().min(1, "JWT_REFRESH_SECRET is required"),
 	JWT_TWO_FA: z.string().min(1, "JWT_TWO_FA is required"),
 	LOGSTASH_HOST: z.string().default("localhost"),
-	LOGSTASH_PORT: z.coerce.number().default(5044),
+	LOGSTASH_PORT: z.coerce.number().int().min(1).max(65535).default(5044),
 });
 
 const env = envSchema.parse(process.env);
