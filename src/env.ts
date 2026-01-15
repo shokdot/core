@@ -8,7 +8,9 @@ const envSchema = z.object({
 	LOG_LEVEL: z.enum(["fatal", "error", "warn", "info", "debug", "trace"]).default("info"),
 	JWT_SECRET: z.string().min(1, "JWT_SECRET is required"),
 	JWT_REFRESH_SECRET: z.string().min(1, "JWT_REFRESH_SECRET is required"),
-	JWT_TWO_FA: z.string().min(1, "JWT_TWO_FA is required")
+	JWT_TWO_FA: z.string().min(1, "JWT_TWO_FA is required"),
+	LOGSTASH_HOST: z.string().default("localhost"),
+	LOGSTASH_PORT: z.coerce.number().default(5044),
 });
 
 const env = envSchema.parse(process.env);
@@ -21,3 +23,5 @@ export const LOG_LEVEL = env.LOG_LEVEL;
 export const JWT_SECRET = env.JWT_SECRET;
 export const JWT_REFRESH_SECRET = env.JWT_REFRESH_SECRET;
 export const JWT_TWO_FA = env.JWT_TWO_FA;
+export const LOGSTASH_HOST = env.LOGSTASH_HOST;
+export const LOGSTASH_PORT = env.LOGSTASH_PORT;

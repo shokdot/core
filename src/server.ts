@@ -1,17 +1,11 @@
 import Fastify, { FastifyInstance } from 'fastify';
-import { LOG_LEVEL } from './env.js';
+import { getLoggerConfig } from './logger.js';
 import { registerPlugins } from './plugins.js';
 import { setErrorHandler } from './errorHandler.js';
 
 export function buildApp(serviceName: string) {
 	const app = Fastify({
-		logger: {
-			level: LOG_LEVEL,
-			transport:
-				process.env.NODE_ENV !== 'production'
-					? { target: 'pino-pretty', options: { colorize: true } }
-					: undefined,
-		},
+		logger: getLoggerConfig(serviceName),
 		trustProxy: true,
 		bodyLimit: 1048576,
 	});
