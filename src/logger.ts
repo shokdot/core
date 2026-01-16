@@ -4,10 +4,10 @@ import { LOG_LEVEL, LOGSTASH_HOST, LOGSTASH_PORT } from './env.js';
 const isProduction = process.env.NODE_ENV === 'production';
 
 export const getLoggerConfig = (serviceName: string): pino.LoggerOptions => {
-    let transport;
+    let transport: pino.LoggerOptions['transport'];
 
     if (isProduction) {
-        transport = pino.transport({
+        transport = {
             target: 'pino-socket',
             options: {
                 address: LOGSTASH_HOST,
@@ -15,12 +15,12 @@ export const getLoggerConfig = (serviceName: string): pino.LoggerOptions => {
                 mode: 'tcp',
                 serviceName,
             },
-        });
+        };
     } else {
-        transport = pino.transport({
+        transport = {
             target: 'pino-pretty',
             options: { colorize: true },
-        });
+        };
     }
 
     return {
