@@ -13,7 +13,6 @@ export const getLoggerConfig = (serviceName: string): pino.LoggerOptions => {
                 address: LOGSTASH_HOST,
                 port: LOGSTASH_PORT,
                 mode: 'tcp',
-                serviceName,
             },
         };
     } else {
@@ -25,6 +24,11 @@ export const getLoggerConfig = (serviceName: string): pino.LoggerOptions => {
 
     return {
         level: LOG_LEVEL,
+        timestamp: pino.stdTimeFunctions.isoTime,
+        base: {
+            service: serviceName,
+            env: process.env.NODE_ENV
+        },
         transport,
     };
 };
