@@ -13,6 +13,7 @@ export const getLoggerConfig = (serviceName: string): pino.LoggerOptions => {
                 address: LOGSTASH_HOST,
                 port: LOGSTASH_PORT,
                 mode: 'tcp',
+                timeout: 5000,
             },
         };
     } else {
