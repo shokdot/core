@@ -1,6 +1,6 @@
 export { default as sendError } from './utils/sendError.js';
 export * from './env.js';
-export * from './plugins.js';
+export * from './plugins/index.js';
 export * from './errorHandler.js';
 export * from './logger.js';
 export * from './server.js';
