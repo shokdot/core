@@ -49,18 +49,18 @@ export function setErrorHandler(app: FastifyInstance, serviceName: string) {
 			);
 		}
 
-		// Handle Internal Errors
-		const errorMessage =
-			error instanceof Error && error.message ? error.message : 'Something went wrong';
-		const stack = error instanceof Error ? error.stack : undefined;
+		// Handle Rate Limit or other defined errors
+		const statusCode = (error as any).statusCode || (error as any).status || 500;
+		const errorCode = (error as any).code || (statusCode === 429 ? 'TOO_MANY_REQUESTS' : 'INTERNAL_SERVER_ERROR');
+		const errorMessage = (error as any).message || 'Something went wrong';
 
 		const logEntry = {
 			'@timestamp': timestamp,
-			level: 'error',
+			level: statusCode >= 500 ? 'error' : 'warn',
 			service: serviceName,
-			event: 'internalError',
+			event: statusCode === 429 ? 'rateLimitError' : 'internalError',
 			message: errorMessage,
-			stack,
+			stack: error instanceof Error ? error.stack : undefined,
 			route: request.routeOptions?.url,
 			method: request.method,
 			url: request.url,
@@ -69,15 +69,18 @@ export function setErrorHandler(app: FastifyInstance, serviceName: string) {
 			headers: request.headers,
 		};
 
-		request.log.error(logEntry);
+		if (statusCode >= 500) {
+			request.log.error(logEntry);
+		} else {
+			request.log.warn(logEntry);
+		}
 
-		const errorDetails =
-			process.env.NODE_ENV !== 'production' ? { stack } : undefined;
+		const errorDetails = (error as any).details || (process.env.NODE_ENV !== 'production' && error instanceof Error ? { stack: error.stack } : undefined);
 
 		return sendError(
 			reply,
-			500,
-			'INTERNAL_SERVER_ERROR',
+			statusCode,
+			errorCode,
 			errorMessage,
 			errorDetails
 		);
