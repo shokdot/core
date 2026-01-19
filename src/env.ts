@@ -11,6 +11,7 @@ const envSchema = z.object({
 	JWT_TWO_FA: z.string().min(1, "JWT_TWO_FA is required"),
 	LOGSTASH_HOST: z.string().default("http://logstash:9201"),
 	LOGSTASH_PORT: z.coerce.number().int().min(1).max(65535).default(9201),
+	CORS_ALLOWED_ORIGINS: z.string().default("*"),
 });
 
 const env = envSchema.parse(process.env);
@@ -25,3 +26,4 @@ export const JWT_REFRESH_SECRET = env.JWT_REFRESH_SECRET;
 export const JWT_TWO_FA = env.JWT_TWO_FA;
 export const LOGSTASH_HOST = env.LOGSTASH_HOST;
 export const LOGSTASH_PORT = env.LOGSTASH_PORT;
+export const CORS_ALLOWED_ORIGINS = env.CORS_ALLOWED_ORIGINS;
