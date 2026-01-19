@@ -2,6 +2,7 @@ import Fastify, { FastifyInstance } from 'fastify';
 import { getLoggerConfig } from './logger.js';
 import { registerPlugins } from './plugins/index.js';
 import { setErrorHandler } from './errorHandler.js';
+import { shutdown } from './shutdown.js';
 
 export function buildApp(serviceName: string) {
     const app = Fastify({
@@ -24,17 +25,6 @@ export async function startServer(
 
     await app.listen({ port, host });
     app.log.info({ event: 'serverStart', message: `Server running at http://${host}:${port}` });
-
-    const shutdown = async () => {
-        try {
-            await app.close();
-            app.log.info({ event: 'shutdown', message: 'Server closed gracefully' });
-            process.exit(0);
-        } catch (err) {
-            app.log.error({ event: 'shutdownError', message: (err as Error).message });
-            process.exit(1);
-        }
-    };
 
     process.on('SIGINT', shutdown);
     process.on('SIGTERM', shutdown);
