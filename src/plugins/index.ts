@@ -7,8 +7,8 @@ import { registerCookies } from './cookies.js';
 import { registerMetrics } from './metrics.js';
 import { registerRateLimit } from './rateLimit.js';
 
-export async function registerPlugins(app: FastifyInstance, host: string, port: number) {
-    await registerSwagger(app, host, port);
+export async function registerPlugins(app: FastifyInstance, host: string, port: number, serviceName: string) {
+    await registerSwagger(app, host, port, serviceName);
     await registerSecurity(app);
     await registerCors(app);
     await registerCookies(app, COOKIE_SECRET);

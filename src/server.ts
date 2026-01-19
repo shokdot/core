@@ -18,9 +18,10 @@ export async function startServer(
     app: FastifyInstance,
     registerRoutes: (app: FastifyInstance) => Promise<void>,
     host: string,
-    port: number
+    port: number,
+    serviceName: string
 ) {
-    await registerPlugins(app, host, port);
+    await registerPlugins(app, host, port, serviceName);
     await registerRoutes(app);
 
     await app.listen({ port, host });
