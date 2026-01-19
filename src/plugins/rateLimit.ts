@@ -8,6 +8,7 @@ export async function registerRateLimit(app: FastifyInstance) {
         keyGenerator: (req) => req.ip || 'unknown',
         errorResponseBuilder: (req, context) => {
             return {
+                status: 429,
                 code: 'TOO_MANY_REQUESTS',
                 message: `Rate limit exceeded. Try again in ${context.after}.`
             };
