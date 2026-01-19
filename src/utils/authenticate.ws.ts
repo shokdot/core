@@ -1,12 +1,14 @@
 import { WebSocket } from 'ws';
-import extractToken from './extractToken.js';
-import decodeToken from './decodeToken.js';
+import { parseAuthToken } from './authUtils.js';
+import wsAuthError from './wsAuthError.js';
 
-const authenticateWs = (authHeader: string, ws: WebSocket) => {
-	const token = extractToken(authHeader);
-	const userId = decodeToken(token);
-
-	return { userId, token };
+const authenticateWs = (authHeader: string | undefined, ws: WebSocket) => {
+	try {
+		return parseAuthToken(authHeader);
+	} catch (error: any) {
+		wsAuthError(error.code, ws);
+		throw error;
+	}
 };
 
 export default authenticateWs;

@@ -1,6 +1,6 @@
 import axios from "axios";
-import { USER_SERVICE_URL } from "../env";
-import { AppError } from "./AppError";
+import { SERVICE_TOKEN, USER_SERVICE_URL } from "../env.js";
+import { AppError } from "./AppError.js";
 
 const checkBlocked = async (userA: string, userB: string) => {
 	try {
@@ -8,7 +8,7 @@ const checkBlocked = async (userA: string, userB: string) => {
 			{
 				params: { userA, userB },
 				headers: {
-					'x-service-token': process.env.SERVICE_TOKEN,
+					'x-service-token': SERVICE_TOKEN,
 				}
 			}
 		)

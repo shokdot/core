@@ -1,14 +1,13 @@
 import { FastifyReply } from 'fastify';
 import { AuthRequest } from '../types/authRequest.js';
-import extractToken from '../utils/extractToken.js';
-import decodeToken from '../utils/decodeToken.js';
+import { parseAuthToken } from '../utils/authUtils.js';
+import { AuthenticateMiddleware } from '../types/authMiddleware.js';
 import sendError from '../utils/sendError.js';
 
-const authenticate = async (request: AuthRequest, reply: FastifyReply) => {
+const authenticate: AuthenticateMiddleware = async (request: AuthRequest, reply: FastifyReply) => {
 	try {
-		const authHeader = request.headers['authorization'];
-		const token = extractToken(authHeader);
-		request.userId = decodeToken(token);
+		const { userId, token } = parseAuthToken(request.headers['authorization']);
+		request.userId = userId;
 		request.accessToken = token;
 
 	} catch (error: any) {
