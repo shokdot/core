@@ -1,6 +1,6 @@
 import axios from "axios";
-import { SERVICE_TOKEN, USER_SERVICE_URL } from "../env.js";
-import { AppError } from "./AppError.js";
+import { SERVICE_TOKEN, USER_SERVICE_URL } from "./env.js";
+import { AppError } from "../errors/AppError.js";
 
 const checkBlocked = async (userA: string, userB: string) => {
 	try {

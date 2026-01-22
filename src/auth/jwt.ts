@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 import JwtType from "../types/jwtType.js";
 import { JwtPayload } from "../types/jwtPayload.js";
-import { AppError } from "./AppError.js";
-import { JWT_REFRESH_SECRET, JWT_SECRET, JWT_TWO_FA } from "../env.js";
+import { AppError } from "../errors/AppError.js";
+import { JWT_REFRESH_SECRET, JWT_SECRET, JWT_TWO_FA } from "../utils/env.js";
 
 export const signJwt = (payload: object, type: JwtType): string => {
 	let expiresIn: jwt.SignOptions['expiresIn'];

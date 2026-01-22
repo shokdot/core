@@ -1,4 +1,4 @@
-import { AppError } from "./AppError.js";
+import { AppError } from "../errors/AppError.js";
 
 const extractToken = (authHeader?: string) => {
 	if (!authHeader || !authHeader.startsWith('Bearer ')) {
