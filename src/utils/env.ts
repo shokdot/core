@@ -9,7 +9,7 @@ const envSchema = z.object({
 	JWT_SECRET: z.string().min(1, "JWT_SECRET is required"),
 	JWT_REFRESH_SECRET: z.string().min(1, "JWT_REFRESH_SECRET is required"),
 	JWT_TWO_FA: z.string().min(1, "JWT_TWO_FA is required"),
-	LOGSTASH_HOST: z.string().default("http://logstash:9201"),
+	LOGSTASH_HOST: z.string().default("logstash"),
 	LOGSTASH_PORT: z.coerce.number().int().min(1).max(65535).default(9201),
 	CORS_ALLOWED_ORIGINS: z.string().default("*"),
 });
