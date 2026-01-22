@@ -2,7 +2,7 @@ import { FastifyReply } from 'fastify';
 import { AppError } from './AppError.js';
 
 const sendError = (
-	reply: FastifyReply,
+	reply: FastifyReply | any,
 	codeOrError: number | AppError,
 	errorCode?: string,
 	message?: string,

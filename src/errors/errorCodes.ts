@@ -208,6 +208,10 @@ export const ERROR_CODES: Record<string, ErrorCodeConfig> = {
 		statusCode: 409,
 		message: 'User is already in the room',
 	},
+	PLAYER_NOT_FOUND_IN_ROOM: {
+		statusCode: 404,
+		message: 'Player not found in room',
+	},
 	ROOM_NOT_WAITING: {
 		statusCode: 400,
 		message: 'Room is not in waiting status',
