@@ -245,6 +245,10 @@ export const ERROR_CODES: Record<string, ErrorCodeConfig> = {
 		statusCode: 500,
 		message: 'Failed to create game',
 	},
+	FAILED_TO_BROADCAST_ROOM_UPDATE: {
+		statusCode: 500,
+		message: 'Failed to broadcast room update',
+	},
 	// Notification errors
 	NOT_FOUND: {
 		statusCode: 404,
