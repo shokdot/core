@@ -274,6 +274,10 @@ export const ERROR_CODES: Record<string, ErrorCodeConfig> = {
 		statusCode: 409,
 		message: 'Invitee is already in a room',
 	},
+	ALREADY_IN_QUEUE: {
+		statusCode: 409,
+		message: 'User is already in the matchmaking queue',
+	},
 	// Notification errors
 	NOT_FOUND: {
 		statusCode: 404,
