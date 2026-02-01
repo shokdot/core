@@ -249,6 +249,31 @@ export const ERROR_CODES: Record<string, ErrorCodeConfig> = {
 		statusCode: 500,
 		message: 'Failed to broadcast room update',
 	},
+	// Invitation errors
+	INVITATION_NOT_FOUND: {
+		statusCode: 404,
+		message: 'Invitation not found',
+	},
+	INVITATION_EXPIRED: {
+		statusCode: 400,
+		message: 'Invitation has expired',
+	},
+	INVITATION_NOT_PENDING: {
+		statusCode: 400,
+		message: 'Invitation is no longer pending',
+	},
+	INVITATION_NOT_FOR_USER: {
+		statusCode: 403,
+		message: 'You are not the invitee for this invitation',
+	},
+	INVITER_ALREADY_IN_ROOM: {
+		statusCode: 409,
+		message: 'Inviter is already in a room',
+	},
+	INVITEE_ALREADY_IN_ROOM: {
+		statusCode: 409,
+		message: 'Invitee is already in a room',
+	},
 	// Notification errors
 	NOT_FOUND: {
 		statusCode: 404,
