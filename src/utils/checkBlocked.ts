@@ -4,7 +4,7 @@ import { AppError } from "../errors/AppError.js";
 
 const checkBlocked = async (userA: string, userB: string) => {
 	try {
-		const { data } = await axios.get(`${USER_SERVICE_URL}/blocks/check`,
+		const { data } = await axios.get(`${USER_SERVICE_URL}/internal/check-block`,
 			{
 				params: { userA, userB },
 				headers: {

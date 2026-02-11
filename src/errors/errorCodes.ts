@@ -9,7 +9,7 @@ export const ERROR_CODES: Record<string, ErrorCodeConfig> = {
 		message: 'Authorization token is missing',
 	},
 	INVALID_ACCESS_TOKEN: {
-		statusCode: 403,
+		statusCode: 401,
 		message: 'Invalid or expired access token',
 	},
 	INVALID_REFRESH_TOKEN: {
