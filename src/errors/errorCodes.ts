@@ -98,9 +98,13 @@ export const ERROR_CODES: Record<string, ErrorCodeConfig> = {
 		statusCode: 404,
 		message: 'User is not registered',
 	},
+	WRONG_PASSWORD: {
+		statusCode: 400,
+		message: 'The current password you entered is incorrect. Please try again.',
+	},
 	WEAK_PASSWORD: {
 		statusCode: 400,
-		message: 'Password is too weak',
+		message: 'Password is too weak. Try using a mix of letters, numbers, and symbols.',
 	},
 	INVALID_TOKEN: {
 		statusCode: 400,
@@ -142,6 +146,18 @@ export const ERROR_CODES: Record<string, ErrorCodeConfig> = {
 	GITHUB_API_ERROR: {
 		statusCode: 500,
 		message: 'GitHub API error',
+	},
+	GITHUB_NOT_LINKED: {
+		statusCode: 400,
+		message: 'GitHub account is not linked',
+	},
+	PASSWORD_ALREADY_SET: {
+		statusCode: 400,
+		message: 'Password is already set. Use change password instead.',
+	},
+	PASSWORD_REQUIRED_FOR_DISCONNECT: {
+		statusCode: 400,
+		message: 'Set a password before disconnecting GitHub',
 	},
 	// 2FA errors
 	NOT_2FA_INITIALIZED: {
