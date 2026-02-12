@@ -27,8 +27,8 @@ export async function startServer(
 	await app.listen({ port, host });
 	app.log.info({ event: 'serverStart', message: `Server running at http://${host}:${port}` });
 
-	process.on('SIGINT', () => shutdown(app));
-	process.on('SIGTERM', () => shutdown(app));
-	process.on('unhandledRejection', () => shutdown(app));
-	process.on('uncaughtException', () => shutdown(app));
+	process.on('SIGINT', () => shutdown(app, 'SIGINT'));
+	process.on('SIGTERM', () => shutdown(app, 'SIGTERM'));
+	process.on('unhandledRejection', (reason: unknown) => shutdown(app, 'unhandledRejection', reason));
+	process.on('uncaughtException', (err: unknown) => shutdown(app, 'uncaughtException', err));
 }
