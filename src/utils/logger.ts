@@ -12,7 +12,8 @@ export const getLoggerConfig = (serviceName: string) => {
 				address: LOGSTASH_HOST,
 				port: LOGSTASH_PORT,
 				mode: 'tcp',
-				timeout: 5000,
+				timeout: 30000,
+				reconnect: true,
 			},
 		};
 	} else {
