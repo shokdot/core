@@ -1,16 +1,10 @@
 # Core
 
-Shared library for ft_transcendence backend services. Provides Fastify app setup, authentication (HTTP and WebSocket), error handling, JWT utilities, health routes, and common schemas. Used by auth-service, room-service, chat-service, game-service, stats-service, notification-service, and user-service.
+> Part of the [ft_transcendence](https://github.com/shokdot/ft_transcendence) project.
 
-## Features
+Shared library used by all ft_transcendence backend services. Provides the Fastify app setup, authentication middleware (HTTP Bearer and WebSocket), error handling utilities, JWT signing/verification, health routes, and common schemas.
 
-- **App**: `buildApp`, `startServer` — Fastify instance with CORS, cookies, rate limit, helmet, swagger, metrics
-- **Auth**: `authenticate` (Bearer HTTP), `authenticateWs` (WebSocket), `serviceAuth` (x-service-token)
-- **Errors**: `sendError`, `AppError`, `ERROR_CODES`, error response schema
-- **JWT**: `signJwt`, `verifyJwt`, `JwtType` (ACCESS, REFRESH, TWO_FA)
-- **Routes**: `healthRoutes` (health check)
-- **Utils**: `checkBlocked` (user-service integration for chat/block checks)
-- **Config**: `API_PREFIX` (default `/api/v1`), env validation (COOKIE_SECRET, JWT_*, SERVICE_TOKEN, etc.)
+**Not a standalone service.** Each microservice imports from `@core/index.js`.
 
 ## Tech Stack
 
@@ -18,52 +12,54 @@ Shared library for ft_transcendence backend services. Provides Fastify app setup
 - **Auth**: jsonwebtoken, cookie signing
 - **Validation**: Zod (env)
 
-## Usage
-
-Core is a **dependency** of other services, not run standalone. Each service imports from `@core/index.js` (or equivalent alias).
-
-### Build
+## Build
 
 ```bash
 npm install
 npm run build
 ```
 
-Build output is used by services that depend on core (monorepo build order: core first, then services).
+Build output is consumed by all services. Build core first in monorepo order.
 
-## Environment (when used by a service)
+## Exports
 
-Services that use core typically need (from core env or their own):
+| Export               | Description                                                       |
+|----------------------|-------------------------------------------------------------------|
+| `buildApp`           | Create a configured Fastify instance (CORS, cookies, rate limit, helmet, swagger, metrics) |
+| `startServer`        | Start the Fastify server on `HOST:PORT`                          |
+| `authenticate`       | Bearer token HTTP middleware                                      |
+| `authenticateWs`     | Bearer token WebSocket authentication                             |
+| `serviceAuth`        | `x-service-token` middleware for internal routes                  |
+| `sendError`          | Standardised error response helper                               |
+| `AppError`           | Custom error class                                                |
+| `ERROR_CODES`        | Shared error code constants                                       |
+| `signJwt`            | Sign a JWT (ACCESS, REFRESH, or TWO_FA)                          |
+| `verifyJwt`          | Verify and decode a JWT                                           |
+| `JwtType`            | Enum: `ACCESS`, `REFRESH`, `TWO_FA`                              |
+| `healthRoutes`       | Registers `GET /health` on the Fastify instance                  |
+| `checkBlocked`       | Calls user-service to check if two users have a block relationship |
+| `API_PREFIX`         | Default API prefix (`/api/v1`)                                   |
 
-- `COOKIE_SECRET` — Cookie signing
-- `API_PREFIX` — Optional; default `/api/v1`
-- `JWT_SECRET`, `JWT_REFRESH_SECRET`, `JWT_TWO_FA` — JWT signing/verification
-- `SERVICE_TOKEN` — Service-to-service auth
-- `USER_SERVICE_URL` — If using checkBlocked or user lookup
-- `CORS_ALLOWED_ORIGINS` — CORS (default `*`)
-- `LOG_LEVEL`, `LOGSTASH_*` — Logging
+## Environment (consumed by services via core)
 
-## Documentation
+| Variable              | Description                          |
+|-----------------------|--------------------------------------|
+| `COOKIE_SECRET`       | Cookie signing key                   |
+| `API_PREFIX`          | API prefix (default `/api/v1`)       |
+| `JWT_SECRET`          | Access token secret                  |
+| `JWT_REFRESH_SECRET`  | Refresh token secret                 |
+| `JWT_TWO_FA`          | 2FA token secret                     |
+| `SERVICE_TOKEN`       | Service-to-service auth token        |
+| `USER_SERVICE_URL`    | Used by `checkBlocked` utility       |
+| `CORS_ALLOWED_ORIGINS`| Allowed CORS origins (default `*`)   |
+| `LOG_LEVEL`           | Logging level                        |
 
-- **[API Reference](docs/api-reference.md)** — Exports: buildApp, startServer, auth, errors, JWT, routes, schemas.
-- **[Usage for service developers](docs/usage-for-services.md)** — How to use core in a new or existing service.
+## Health Endpoint
 
-## Project Structure
+All services using core expose:
 
 ```
-src/
-├── auth/          # JWT, extractToken, authenticateWs, wsAuthError
-├── errors/        # AppError, errorCodes, sendError, handlers
-├── middlewares/   # authenticate, serviceAuth
-├── plugins/      # cors, cookies, rateLimit, security, swagger, metrics
-├── routes/        # health.routes
-├── schemas/       # error.schema
-├── types/         # AuthRequest, jwtType, etc.
-├── utils/         # env, logger, shutdown, checkBlocked
-├── server.ts      # buildApp, startServer
-└── index.ts       # Public exports
+GET /health
 ```
 
-## License
-
-Part of ft_transcendence project.
+Returns `200 OK` when the service is running.
